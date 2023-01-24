@@ -1,71 +1,50 @@
 <script lang="ts">
-	import { page } from '$app/stores';
-	import Login from './Login.svelte';
-	import User from './User.svelte';
-	import Todo from './Todo.svelte';
-	import { todos } from '$lib/stores';
-	import { onMount } from 'svelte';
+	import { evaluate } from 'mathjs';
+	let input = '';
+	let result = '';
 
-	let channel: undefined | BroadcastChannel;
-	onMount(async () => {
-		channel = new BroadcastChannel('thechannel');
-		channel.onmessage = (event) => {
-			todos.set(event.data);
-		};
-	});
-	const addTodo = async () => {
-		if (name !== '') {
-			todos.update((todos) => {
-				const newTodo = {
-					id: self.crypto.randomUUID(),
-					text: name,
-					done: false
-				};
-				return [...todos, newTodo];
-			});
-			name = '';
-			channel?.postMessage($todos);
-		}
+	const update = (e: any) => {
+		input += e.target.dataset.symbol;
 	};
 
-	const toggleTodo = (id: number) => {
-		todos.update((todos: any) => {
-			const todo = todos.find((todo: any) => todo.id === id);
-			todo!.done = !todo!.done;
-			return todos;
-		});
-		channel?.postMessage($todos);
+	const rem = () => {
+		input.length > 0 ? (input = input.slice(0, -1)) : null;
 	};
 
-	const deleteTodo = (id: number) => {
-		// Remove a todo from our list of todos
-		todos.update((todos) => {
-			return todos.filter((todo) => todo.id !== id);
-		});
-		channel.postMessage($todos);
+	const solve = () => {
+		result = evaluate(input).toString();
 	};
-
-	let name = '';
 </script>
 
-<h1 class="text-3xl">Welcome to SvelteKit</h1>
-{#if !$page.data.session}
-	<Login />
-{:else}
-	<User />
-{/if}
-
-<div>
-	<input bind:value={name} placeholder="enter your todo" />
-	<button on:click={addTodo}>Add</button>
+<div class="flex h-screen flex-col">
+	<div class="h-1/2">
+		<div class="text-6xl text-right">
+			{input}
+		</div>
+		<div class="text-3xl text-right">
+			{result}
+		</div>
+	</div>
+	<div class="grid grid-cols-4 grow text-xl gap-2 py-4">
+		<button on:click={update} data-symbol="(" class="btn btn-ghost ">(</button>
+		<button on:click={update} data-symbol=")" class="btn btn-ghost ">)</button>
+		<button on:click={update} data-symbol="^" class="btn btn-ghost ">^</button>
+		<button on:click={rem} class="btn btn-ghost ">rem</button>
+		<button on:click={update} data-symbol="7" class="btn btn-ghost ">7</button>
+		<button on:click={update} data-symbol="8" class="btn btn-ghost">8</button>
+		<button on:click={update} data-symbol="9" class="btn btn-ghost">9</button>
+		<button on:click={update} data-symbol="+" class="btn btn-ghost">+</button>
+		<button on:click={update} data-symbol="4" class="btn btn-ghost">4</button>
+		<button on:click={update} data-symbol="5" class="btn btn-ghost">5</button>
+		<button on:click={update} data-symbol="6" class="btn btn-ghost">6</button>
+		<button on:click={update} data-symbol="-" class="btn btn-ghost">-</button>
+		<button on:click={update} data-symbol="1" class="btn btn-ghost">1</button>
+		<button on:click={update} data-symbol="2" class="btn btn-ghost">2</button>
+		<button on:click={update} data-symbol="3" class="btn btn-ghost">3</button>
+		<button on:click={update} data-symbol="*" class="btn btn-ghost">*</button>
+		<button on:click={update} data-symbol="." class="btn btn-ghost">,</button>
+		<button on:click={update} data-symbol="0" class="btn btn-ghost">0</button>
+		<button on:click={solve} class="btn btn-ghost">=</button>
+		<button on:click={update} data-symbol="/" class="btn btn-ghost">/</button>
+	</div>
 </div>
-
-{#each $todos as { text, id, done }, i}
-	<Todo
-		{text}
-		{id}
-		{done}
-		on:toggle={(event) => toggleTodo(event.detail.id)}
-		on:delete={(event) => deleteTodo(event.detail.id)}
-	/>
-{/each}
