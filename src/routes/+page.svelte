@@ -1,9 +1,9 @@
 <script lang="ts">
-	import { evaluate, format } from 'mathjs';
+
 	let input = '';
 	let result = '';
 
-	const update = (e: any) => {
+	const update = async (e: any) => {
 		input += e.target.dataset.symbol;
 	};
 
@@ -11,10 +11,10 @@
 		input.length > 0 ? (input = input.slice(0, -1)) : null;
 	};
 
-	const solve = () => {
-		let temp = evaluate(input).toString();
-		result = format(temp, {precision: 14})  // '0.3'
-
+	const solve = async() => {
+		const { evaluate, format } = await import('mathjs');
+		let temp = await evaluate(input);
+		result = await format(temp, {precision: 14}).toString();
 	};
 </script>
 
