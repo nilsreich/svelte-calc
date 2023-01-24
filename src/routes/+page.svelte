@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { evaluate } from 'mathjs';
+	import { evaluate, format } from 'mathjs';
 	let input = '';
 	let result = '';
 
@@ -12,7 +12,9 @@
 	};
 
 	const solve = () => {
-		result = evaluate(input).toString();
+		let temp = evaluate(input).toString();
+		result = format(temp, {precision: 14})  // '0.3'
+
 	};
 </script>
 
