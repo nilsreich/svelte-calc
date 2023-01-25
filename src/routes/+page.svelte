@@ -15,7 +15,7 @@
 		input.length > 0 ? (input = input.slice(0, -1)) : null;
 	};
 
-	const remHold()=>{
+	const remHold=()=>{
 		remInterval = setInterval(rem, 100);
 	}
 
@@ -51,7 +51,7 @@
 	<button on:click={update} data-symbol="(" class="btn btn-ghost text-2xl">(</button>
 	<button on:click={update} data-symbol=")" class="btn btn-ghost text-2xl">)</button>
 	<button on:click={update} data-symbol="^" class="btn btn-ghost text-2xl">^</button>
-	<button on:click={rem} on:mousedown={remHold} on:mouseup={remRelease} class="btn btn-ghost text-2xl">⌫</button>
+	<button on:click={rem} on:mousedown={remHold} on:touchstart={remHold} on:touchend={remRelease} on:mouseup={remRelease} class="btn btn-ghost text-2xl">⌫</button>
 	<button on:click={update} data-symbol="7" class="btn btn-ghost text-2xl">7</button>
 	<button on:click={update} data-symbol="8" class="btn btn-ghost text-2xl">8</button>
 	<button on:click={update} data-symbol="9" class="btn btn-ghost text-2xl">9</button>
