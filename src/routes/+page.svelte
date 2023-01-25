@@ -4,6 +4,8 @@
 
 	let inputDisplay;
 
+	let remInterval;
+
 	const update = async (e: any) => {
 		input += e.target.dataset.symbol;
 		inputDisplay.scrollLeft = inputDisplay.scrollWidth;
@@ -11,6 +13,14 @@
 
 	const rem = () => {
 		input.length > 0 ? (input = input.slice(0, -1)) : null;
+	};
+
+	const remHold()=>{
+		remInterval = setInterval(rem, 100);
+	}
+
+	const remRelease = () => {
+		clearInterval(remInterval);
 	};
 
 	const solve = async () => {
@@ -41,7 +51,7 @@
 	<button on:click={update} data-symbol="(" class="btn btn-ghost text-2xl">(</button>
 	<button on:click={update} data-symbol=")" class="btn btn-ghost text-2xl">)</button>
 	<button on:click={update} data-symbol="^" class="btn btn-ghost text-2xl">^</button>
-	<button on:click={rem} on:mousedown={()=>setInterval(rem,100)} class="btn btn-ghost text-2xl">⌫</button>
+	<button on:click={rem} on:mousedown={remHold} on:mouseup={remRelease} class="btn btn-ghost text-2xl">⌫</button>
 	<button on:click={update} data-symbol="7" class="btn btn-ghost text-2xl">7</button>
 	<button on:click={update} data-symbol="8" class="btn btn-ghost text-2xl">8</button>
 	<button on:click={update} data-symbol="9" class="btn btn-ghost text-2xl">9</button>
