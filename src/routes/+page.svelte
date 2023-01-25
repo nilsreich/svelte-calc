@@ -8,7 +8,7 @@
 	};
 
 	const rem = () => {
-		input.length > 0 ? (input = input.slice(0, -1)) : null;
+		 input.length > 0 ? (input = input.slice(0, -1)) : null;
 	};
 
 	const solve = async() => {
@@ -21,10 +21,10 @@
 <div class="flex h-screen flex-col">
 	<div class="h-1/2 p-4">
 		<div class="text-6xl text-right">
-			{input}
+			<span> &nbsp;</span>{input}
 		</div>
 		<div class="text-3xl text-right">
-			{result}
+			{result}3
 		</div>
 	</div>
 	<div class="grid grid-cols-4 grow gap-2 py-4">
