@@ -2,8 +2,11 @@
 	let input = '';
 	let result = '';
 
+	let inputDisplay;
+
 	const update = async (e: any) => {
 		input += e.target.dataset.symbol;
+		inputDisplay.scrollLeft = inputDisplay.scrollWidth;
 	};
 
 	const rem = () => {
@@ -23,33 +26,49 @@
 	};
 </script>
 
-	<div class="h-1/2 p-4">
-		<div class="text-6xl text-right">
-			<span> &nbsp;</span>{input}
-		</div>
-		<div class="text-3xl text-right">
-			{result}
-		</div>
+<div class="h-1/2 p-4 w-screen">
+	<div
+		class="text-6xl text-right overflow-scroll overflow-y-hidden scrollbar-hide whitespace-nowrap"
+		bind:this={inputDisplay}
+	>
+		<span> &nbsp;</span>{input}
 	</div>
-	<div class="grid grid-cols-4 grow gap-2 py-4 w-full h-1/2 absolute bottom-0">
-		<button on:click={update} class="btn btn-ghost text-2xl">(</button>
-		<button on:click={update} class="btn btn-ghost text-2xl">)</button>
-		<button on:click={update} class="btn btn-ghost text-2xl">^</button>
-		<button on:click={rem} class="btn btn-ghost text-2xl">⌫</button>
-		<button on:click={update} data-symbol="7" class="btn btn-ghost text-2xl">7</button>
-		<button on:click={update} data-symbol="8" class="btn btn-ghost text-2xl">8</button>
-		<button on:click={update} data-symbol="9" class="btn btn-ghost text-2xl">9</button>
-		<button on:click={update} data-symbol="+" class="btn btn-ghost text-2xl">+</button>
-		<button on:click={update} data-symbol="4" class="btn btn-ghost text-2xl">4</button>
-		<button on:click={update} data-symbol="5" class="btn btn-ghost text-2xl">5</button>
-		<button on:click={update} data-symbol="6" class="btn btn-ghost text-2xl">6</button>
-		<button on:click={update} data-symbol="−" class="btn btn-ghost text-2xl">−</button>
-		<button on:click={update} data-symbol="1" class="btn btn-ghost text-2xl">1</button>
-		<button on:click={update} data-symbol="2" class="btn btn-ghost text-2xl">2</button>
-		<button on:click={update} data-symbol="3" class="btn btn-ghost text-2xl">3</button>
-		<button on:click={update} data-symbol="×" class="btn btn-ghost text-2xl">×</button>
-		<button on:click={update} data-symbol="," class="btn btn-ghost text-2xl">,</button>
-		<button on:click={update} data-symbol="0" class="btn btn-ghost text-2xl">0</button>
-		<button on:click={solve} class="btn btn-ghost text-2xl bg-opacity-0">=</button>
-		<button on:click={update} data-symbol="/" class="btn btn-ghost text-2xl">/</button>
+	<div class="text-3xl text-right">
+		{result}
 	</div>
+</div>
+<div class="grid grid-cols-4 grow gap-2 py-4 w-full h-1/2 absolute bottom-0">
+	<button on:click={update} data-symbol="(" class="btn btn-ghost text-2xl">(</button>
+	<button on:click={update} data-symbol=")" class="btn btn-ghost text-2xl">)</button>
+	<button on:click={update} data-symbol="^" class="btn btn-ghost text-2xl">^</button>
+	<button on:click={rem} on:mousedown={()=>setInterval(rem,100)} class="btn btn-ghost text-2xl">⌫</button>
+	<button on:click={update} data-symbol="7" class="btn btn-ghost text-2xl">7</button>
+	<button on:click={update} data-symbol="8" class="btn btn-ghost text-2xl">8</button>
+	<button on:click={update} data-symbol="9" class="btn btn-ghost text-2xl">9</button>
+	<button on:click={update} data-symbol="+" class="btn btn-ghost text-2xl">+</button>
+	<button on:click={update} data-symbol="4" class="btn btn-ghost text-2xl">4</button>
+	<button on:click={update} data-symbol="5" class="btn btn-ghost text-2xl">5</button>
+	<button on:click={update} data-symbol="6" class="btn btn-ghost text-2xl">6</button>
+	<button on:click={update} data-symbol="−" class="btn btn-ghost text-2xl">−</button>
+	<button on:click={update} data-symbol="1" class="btn btn-ghost text-2xl">1</button>
+	<button on:click={update} data-symbol="2" class="btn btn-ghost text-2xl">2</button>
+	<button on:click={update} data-symbol="3" class="btn btn-ghost text-2xl">3</button>
+	<button on:click={update} data-symbol="×" class="btn btn-ghost text-2xl">×</button>
+	<button on:click={update} data-symbol="," class="btn btn-ghost text-2xl">,</button>
+	<button on:click={update} data-symbol="0" class="btn btn-ghost text-2xl">0</button>
+	<button on:click={solve} class="btn btn-ghost text-2xl bg-opacity-0">=</button>
+	<button on:click={update} data-symbol="/" class="btn btn-ghost text-2xl">/</button>
+</div>
+
+<style>
+	/* For Webkit-based browsers (Chrome, Safari and Opera) */
+	.scrollbar-hide::-webkit-scrollbar {
+		display: none;
+	}
+
+	/* For IE, Edge and Firefox */
+	.scrollbar-hide {
+		-ms-overflow-style: none; /* IE and Edge */
+		scrollbar-width: none; /* Firefox */
+	}
+</style>
