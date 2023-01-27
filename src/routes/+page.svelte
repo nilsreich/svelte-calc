@@ -9,12 +9,13 @@
 	let input = '';
 
 	const update = async (e: any) => {
+		removeRelease()
 		input += e.target.dataset.symbol;
 	};
 
 	// When the user presses the backspace key, remove the last character in the input string.
 	// If the user holds the backspace key down, keep removing characters at an interval.
-	// The remove interval is set to 100 milliseconds.
+	// The remove interval is set to 150 milliseconds.
 	// The remove interval is cleared when the user releases the backspace key.
 	let removeInterval:any;
 	const remove = () => {
@@ -22,7 +23,7 @@
 	};
 
 	const removeHold = () => {
-		removeInterval = setInterval(remove, 100);
+		removeInterval = setInterval(remove, 150);
 	};
 
 	const removeRelease = () => {
@@ -38,7 +39,7 @@
 	// to replace any characters that are not allowed by mathjs.
 	// The result is formatted to 14 decimal places using the
 	// format function.
-	let result = '';
+	let resultRounded='';
 
 	const solve = async () => {
 		// Import mathjs
@@ -48,14 +49,30 @@
 		let expression = input.replaceAll('−', '-');
 		expression = expression.replaceAll(',', '.');
 		expression = expression.replaceAll('×', '*');
+		expression = expression.replaceAll('ℼ', 'pi');
 
 		// Solve the expression and return the result
 		let result = await evaluate(expression);
-		result = await format(result, { precision: 14 }).toString();
+		resultRounded = await format(result, { precision: 14 }).toString();
+	};
+
+	const solveequation = async () => {
+		// Import mathjs
+		const { evaluate, format } = await import('mathjs');
+
+		// Replace invalid characters
+		let expression = input.replaceAll('−', '-');
+		expression = expression.replaceAll(',', '.');
+		expression = expression.replaceAll('×', '*');
+		expression = expression.replaceAll('ℼ', 'pi');
+
+		// Solve the expression and return the result
+		let result = await evaluate(expression);
+		resultRounded = await format(result, { precision: 14 }).toString();
 	};
 </script>
 
-s
+
 
 <div class="h-1/2 p-4 w-screen">
 	<div
@@ -64,7 +81,7 @@ s
 		<span> &nbsp;</span>{input}
 	</div>
 	<div class="text-3xl text-right">
-		{result}
+		{resultRounded}
 	</div>
 </div>
 <div
@@ -100,9 +117,10 @@ s
 		<button on:click={update} data-symbol="/" class="btn btn-ghost text-2xl">/</button>
 	</div>
 	<div class="snap-start shrink-0  grid grid-cols-4 grow gap-2 py-4 w-screen ">
-		<button on:click={update} data-symbol="pi" class="btn btn-ghost text-2xl">ℼ</button>
+		<button on:click={update} data-symbol="ℼ" class="btn btn-ghost text-2xl">ℼ</button>
 		<button on:click={update} data-symbol="e" class="btn btn-ghost text-2xl">e</button>
-		<button on:click={update} data-symbol="sin(" class="btn btn-ghost text-2xl">sin</button>
+		<button on:click={update} data-symbol="=" class="btn btn-ghost text-2xl">=</button>
+		<button on:click={solveequation} class="btn btn-ghost text-2xl">solve</button>
 
 	</div>
 </div>
